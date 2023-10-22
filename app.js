@@ -297,3 +297,126 @@ function validateFormInput() {
 }
 const submitBtn = document.querySelector('.submitBtn');
 submitBtn.addEventListener('click', validateFormInput);
+
+function highlightProduct() {
+    const products = document.querySelectorAll('.product');
+
+    products.forEach(product => {
+        product.style.cursor = 'pointer';
+        product.addEventListener('click', () => {
+            if (product.style.backgroundColor === '') {
+                // Nếu sản phẩm đã có màu nền cam, hủy bỏ màu nền
+                product.style.backgroundColor = 'orange';
+            }
+            else if (product.style.backgroundColor === 'orange') {
+                product.style.backgroundColor = '';
+            }
+        });
+    });
+}
+window.addEventListener('load', highlightProduct);
+// Lấy phần tử button bằng cách sử dụng id của nút "clear-button"
+const clearButton = document.querySelector('.clear-button');
+
+// Gán sự kiện click cho nút "clear-button"
+clearButton.addEventListener('click', function () {
+    // Lấy danh sách tất cả các phần tử input và checkbox
+    const inputElements = document.querySelectorAll('input');
+
+    // Lặp qua danh sách các phần tử input và checkbox và xóa nội dung và giá trị của chúng
+    inputElements.forEach(function (inputElement) {
+        if (inputElement.type === 'checkbox') {
+            inputElement.checked = false; // Bỏ chọn checkbox
+        } else {
+            inputElement.value = ''; // Gán giá trị rỗng để xóa nội dung
+        }
+    });
+});
+
+// Lấy tất cả các phần tử có lớp là "product"
+const productElements = document.querySelectorAll('.product');
+const addButton = document.querySelector('.addButton');
+
+addButton.addEventListener('click', function () {
+    const cartItemsContainer = document.querySelector('.cartItems');
+
+    // Lặp qua danh sách các phần tử "product"
+    productElements.forEach(productElement => {
+        // Kiểm tra xem phần tử có background màu cam hay không
+        if (productElement.style.backgroundColor === 'orange') {
+            // Tạo một phần tử mới để thêm vào thẻ div "cartItems"
+            const cartItem = document.createElement('div');
+            cartItem.textContent = productElement.textContent;
+            cartItem.style.cssText = `
+        width: inherit;
+        text-align: center;
+        font-size: 20px;
+        height: fit-content;
+        padding: 5px;
+        border: 1px solid gray;
+        margin: 3px;
+        border-radius: 5px;
+      `;
+            cartItem.classList.add('product');
+            cartItemsContainer.appendChild(cartItem);
+        }
+    });
+});
+
+const addAllButton = document.querySelector('.addAllButton');
+
+addAllButton.addEventListener('click', function () {
+    const cartItemsContainer = document.querySelector('.cartItems');
+
+    // Lặp qua danh sách các phần tử "product"
+    productElements.forEach(productElement => {
+        // Kiểm tra xem phần tử có background màu cam hay không
+
+        // Tạo một phần tử mới để thêm vào thẻ div "cartItems"
+        const cartItem = document.createElement('div');
+        cartItem.textContent = productElement.textContent;
+        cartItem.style.cssText = `
+        width: inherit;
+        text-align: center;
+        font-size: 20px;
+        height: fit-content;
+        padding: 5px;
+        border: 1px solid gray;
+        margin: 3px;
+        border-radius: 5px;
+      `;
+        cartItem.classList.add('product');
+        cartItemsContainer.appendChild(cartItem);
+
+    });
+});
+
+const cartItems = document.querySelector('.cartItems');
+cartItems.addEventListener('click', (event) => {
+    if (event.target.classList.contains('product')) {
+        event.target.classList.toggle('orange-background');
+    }
+});
+
+
+function handleRemoveButton() {
+    const cartItems = document.querySelector('.cartItems');
+    const products = cartItems.querySelectorAll('.orange-background');
+
+    products.forEach(product => {
+        product.remove();
+    });
+}
+
+const removeButton = document.querySelector('.removeButton');
+removeButton.addEventListener('click', handleRemoveButton);
+
+function handleRemoveAllButton() {
+    const cartItems = document.querySelector('.cartItems');
+    const products = cartItems.querySelectorAll('.product');
+    products.forEach(product => {
+        product.remove();
+    });
+}
+const removeAllButton = document.querySelector('.removeAllButton');
+removeAllButton.addEventListener('click', handleRemoveAllButton);
